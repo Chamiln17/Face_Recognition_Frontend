@@ -10,14 +10,14 @@ import "./App.css";
 const App = () => {
   const [input, setInput] = useState("");
   const [imgUrlRecog, setImgUrlRecog] = useState("");
+  const [box, setBox] = useState({});
 
   const particlesInit = useCallback(async (engine) => {
-    console.log(engine);
     await loadSlim(engine);
   }, []);
 
   const particlesLoaded = useCallback(async (container) => {
-    await console.log(container);
+    //await console.log(container);
   }, []);
   const partclesOptions = {
     fpsLimit: 120,
@@ -83,9 +83,27 @@ const App = () => {
     },
     detectRetina: true,
   };
+  // This function calculates the box dimensions for the face
+const calcBoxFace = (data) => {
+  const image = document.getElementById("inputimage");
+  const width = Number(image.width);
+    const height = Number(image.height);
+  return {
+    right: width - (width * data.right_col),
+    bottom: height - (height * data.bottom_row),
+    left: width * data.left_col,
+    top: height * data.top_row,
+};
+  };
+  const displayFaceBox = (box) => {
+    //console.log(box);
+    setBox(box);
+  };
+
+  // This function updates the input state with the value from the input field
 
   const onInputChange = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setInput(event.target.value);
   };
 
@@ -138,7 +156,7 @@ const App = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-            console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
+            displayFaceBox(calcBoxFace(result.outputs[0].data.regions[0].region_info.bounding_box));
       })
       .catch((error) => console.log("error", error));
   };
@@ -158,7 +176,7 @@ const App = () => {
         onInputChange={onInputChange}
         onButtonSubmit={onButtonSubmit}
       />
-        <FaceRecognition imgUrlRecog={imgUrlRecog} />
+        <FaceRecognition box={box} imgUrlRecog={imgUrlRecog} />
     </div>
   );
 };

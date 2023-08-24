@@ -1,7 +1,12 @@
-const FaceRecognition  = ({imgUrlRecog}) => {
+import './FaceRecognition.css';
+
+
+const FaceRecognition  = ({imgUrlRecog, box}) => {
+    console.log(box);
     return ( <div className="center ma ">
         <div className="absolute mt2">
-            <img src={imgUrlRecog} alt="face"  width="500px" height="auto"/>
+            <img id="inputimage" src={imgUrlRecog} alt="face"  width="500px" height="auto"/>
+            <div className="bounding_box" style={{ left: box.left , right:box.right , top:box.top , bottom:box.bottom,}}></div>
         </div>
     </div> );
 }
