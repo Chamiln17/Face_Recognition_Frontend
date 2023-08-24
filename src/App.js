@@ -3,11 +3,13 @@ import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 import Navigation from "./components/Navigation/Navigation";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
+import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
 
 const App = () => {
   const [input, setInput] = useState("");
+  const [imgUrlRecog, setImgUrlRecog] = useState("");
 
   const particlesInit = useCallback(async (engine) => {
     console.log(engine);
@@ -128,13 +130,16 @@ const App = () => {
     return requestOptions;
   };
 
-  const onButtonSubmit = (event) => {
+  const onButtonSubmit = () => {
+    setImgUrlRecog(input);
     fetch(
       "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
       requestOptionsJSON(input)
     )
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => {
+            console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -153,8 +158,7 @@ const App = () => {
         onInputChange={onInputChange}
         onButtonSubmit={onButtonSubmit}
       />
-      {/*
-         <FaceRecognition /> */}
+        <FaceRecognition imgUrlRecog={imgUrlRecog} />
     </div>
   );
 };
