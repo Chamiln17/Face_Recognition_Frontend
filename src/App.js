@@ -6,6 +6,7 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
+import SignIn from "./components/SignIn/SignIn";
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -156,6 +157,7 @@ const calcBoxFace = (data) => {
     )
       .then((response) => response.json())
       .then((result) => {
+        console.log(result);
             displayFaceBox(calcBoxFace(result.outputs[0].data.regions[0].region_info.bounding_box));
       })
       .catch((error) => console.log("error", error));
@@ -170,6 +172,7 @@ const calcBoxFace = (data) => {
         loaded={particlesLoaded}
         options={partclesOptions}
       />
+      <SignIn />
       <Navigation />
       <Rank />
       <ImageLinkForm
