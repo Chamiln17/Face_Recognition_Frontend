@@ -7,11 +7,14 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
 import SignIn from "./components/SignIn/SignIn";
+import Register from "./components/Register/Register";
 
 const App = () => {
   const [input, setInput] = useState("");
   const [imgUrlRecog, setImgUrlRecog] = useState("");
   const [box, setBox] = useState({});
+  const [route ,setRoute]=useState("signin")
+  const [isSignedIn,setisSignedIn]=useState(false)
 
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
@@ -163,6 +166,16 @@ const calcBoxFace = (data) => {
       .catch((error) => console.log("error", error));
   };
 
+  const onRouteChange=(route)=>{
+    if(route==="home"){
+      setisSignedIn(true);
+    }else {
+      setisSignedIn(false);
+    }
+    setRoute(route)
+  };
+
+
   return (
     <div className="App">
       <Particles
@@ -172,16 +185,24 @@ const calcBoxFace = (data) => {
         loaded={particlesLoaded}
         options={partclesOptions}
       />
-      <SignIn />
-      <Navigation />
-      <Rank />
-      <ImageLinkForm
-        onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit}
-      />
-        <FaceRecognition box={box} imgUrlRecog={imgUrlRecog} />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      {route === "signin" ? (
+        <SignIn onRouteChange={onRouteChange}  />
+      ) : route === "register" ? (
+        <Register onRouteChange={onRouteChange}  />
+      ) : (
+        <div>
+          <Rank />
+          <ImageLinkForm
+            onInputChange={onInputChange}
+            onButtonSubmit={onButtonSubmit}
+          />
+          <FaceRecognition box={box} imgUrlRecog={imgUrlRecog} />
+        </div>
+      )}
     </div>
   );
-};
-
-export default App;
+  };
+  
+  export default App;
+  

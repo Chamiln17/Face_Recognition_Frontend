@@ -2,7 +2,6 @@ import './FaceRecognition.css';
 
 
 const FaceRecognition  = ({imgUrlRecog, box}) => {
-    console.log(box);
     return ( <div className="center ma ">
         <div className="absolute mt2">
             <img id="inputimage" src={imgUrlRecog} alt="face"  width="500px" height="auto"/>
