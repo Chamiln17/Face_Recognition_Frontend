@@ -15,7 +15,17 @@ const App = () => {
   const [box, setBox] = useState({});
   const [route ,setRoute]=useState("signin")
   const [isSignedIn,setisSignedIn]=useState(false)
+  const [particles, setParticles] = React.useState(0);
 
+
+  const MAX_PARTICLES = 100;
+  const PUSH_NUMBER = 2;
+  const handleParticlesPush = (mode) => {
+    if (mode === 'push' && particles >= MAX_PARTICLES) {
+      return;
+    }
+    setParticles((prev) => prev + PUSH_NUMBER);
+  };
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
@@ -24,7 +34,13 @@ const App = () => {
     //await console.log(container);
   }, []);
   const partclesOptions = {
-    fpsLimit: 120,
+    fpsLimit: 90,
+    animation: {
+      enable: true,
+      speed: 1,
+      minimumValue: 0,
+      sync: false,
+    },
     interactivity: {
       events: {
         onClick: {
@@ -38,8 +54,15 @@ const App = () => {
         resize: true,
       },
       modes: {
+        bubble: {
+          distance: 400,
+          duration: 2,
+          opacity: 0.8,
+          size: 40,
+        },
         push: {
-          quantity: 4,
+          quantity: PUSH_NUMBER,
+          particles_nb: PUSH_NUMBER,
         },
         repulse: {
           distance: 200,
@@ -48,6 +71,11 @@ const App = () => {
       },
     },
     particles: {
+      /* life: {
+        duration: {
+          value: 5,
+        },
+      }, */
       color: {
         value: "#ffffff",
       },
@@ -73,7 +101,7 @@ const App = () => {
           enable: true,
           area: 800,
         },
-        value: 80,
+        value: MAX_PARTICLES,
       },
       opacity: {
         value: 0.5,
@@ -84,6 +112,7 @@ const App = () => {
       size: {
         value: { min: 1, max: 5 },
       },
+      
     },
     detectRetina: true,
   };
@@ -184,6 +213,7 @@ const calcBoxFace = (data) => {
         init={particlesInit}
         loaded={particlesLoaded}
         options={partclesOptions}
+        onParticlesUpdate={handleParticlesPush}
       />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       {route === "signin" ? (
