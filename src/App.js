@@ -1,4 +1,4 @@
-import React, { useCallback, useState  } from "react";
+import React, { useCallback, useState } from "react";
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 import Navigation from "./components/Navigation/Navigation";
@@ -13,41 +13,37 @@ const App = () => {
   const [input, setInput] = useState("");
   const [imgUrlRecog, setImgUrlRecog] = useState("");
   const [box, setBox] = useState({});
-  const [route ,setRoute]=useState("signin")
-  const [isSignedIn,setisSignedIn]=useState(false)
+  const [route, setRoute] = useState("signin");
+  const [isSignedIn, setisSignedIn] = useState(false);
   const [particles, setParticles] = React.useState(0);
-  const [user,setUser]=useState({
-    id:"",
-    name:"",
-    email:"",
-    entries:0,
-    joined:""
+  const [user, setUser] = useState({
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
   });
 
-
-
-  const loadUser = (user)=>{
+  const loadUser = (user) => {
     setUser({
-      id:user.id,
-      name:user.name,
-      email:user.email,
-      entries:user.entries,
-      joined:user.joined
-    })
-  }
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      entries: user.entries,
+      joined: user.joined,
+    });
+  };
 
-
-/*   useEffect(() => {
+  /*   useEffect(() => {
     fetch("http://localhost:5000/")
       .then((response) => response.json())
       .then(console.log);
   }, []);  */ // TESTING THE WATERS XD
 
-
   const MAX_PARTICLES = 100;
   const PUSH_NUMBER = 2;
   const handleParticlesPush = (mode) => {
-    if (mode === 'push' && particles >= MAX_PARTICLES) {
+    if (mode === "push" && particles >= MAX_PARTICLES) {
       return;
     }
     setParticles((prev) => prev + PUSH_NUMBER);
@@ -138,21 +134,20 @@ const App = () => {
       size: {
         value: { min: 1, max: 5 },
       },
-      
     },
     detectRetina: true,
   };
   // This function calculates the box dimensions for the face
-const calcBoxFace = (data) => {
-  const image = document.getElementById("inputimage");
-  const width = Number(image.width);
+  const calcBoxFace = (data) => {
+    const image = document.getElementById("inputimage");
+    const width = Number(image.width);
     const height = Number(image.height);
-  return {
-    right: width - (width * data.right_col),
-    bottom: height - (height * data.bottom_row),
-    left: width * data.left_col,
-    top: height * data.top_row,
-};
+    return {
+      right: width - width * data.right_col,
+      bottom: height - height * data.bottom_row,
+      left: width * data.left_col,
+      top: height * data.top_row,
+    };
   };
   const displayFaceBox = (box) => {
     //console.log(box);
@@ -207,7 +202,7 @@ const calcBoxFace = (data) => {
     return requestOptions;
   };
 
-  const onButtonSubmit = () => {
+  const onPictureSubmit = () => {
     setImgUrlRecog(input);
     fetch(
       "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
@@ -215,21 +210,35 @@ const calcBoxFace = (data) => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
-            displayFaceBox(calcBoxFace(result.outputs[0].data.regions[0].region_info.bounding_box));
+        if(result){
+          setUser(Object.assign(user , {entries:user.entries +1}))
+          fetch("http://localhost:5000/image", {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: user.id,
+            })
+          })
+          .then(response => response.json())
+          .then(count =>{console.log(user.entries)})
+        }
+        displayFaceBox(
+          calcBoxFace(
+            result.outputs[0].data.regions[0].region_info.bounding_box
+          )
+        );
       })
       .catch((error) => console.log("error", error));
   };
 
-  const onRouteChange=(route)=>{
-    if(route==="home"){
+  const onRouteChange = (route) => {
+    if (route === "home") {
       setisSignedIn(true);
-    }else {
+    } else {
       setisSignedIn(false);
     }
-    setRoute(route)
+    setRoute(route);
   };
-
 
   return (
     <div className="App">
@@ -243,22 +252,21 @@ const calcBoxFace = (data) => {
       />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       {route === "signin" ? (
-        <SignIn loadUser={loadUser} onRouteChange={onRouteChange}  />
+        <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
       ) : route === "register" ? (
-        <Register loadUser={loadUser} onRouteChange={onRouteChange}  />
+        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
       ) : (
         <div>
-          <Rank userEntires={user.entries} userName={user.name}/>
+          <Rank userEntires={user.entries} userName={user.name} />
           <ImageLinkForm
             onInputChange={onInputChange}
-            onButtonSubmit={onButtonSubmit}
+            onPictureSubmit={onPictureSubmit}
           />
           <FaceRecognition box={box} imgUrlRecog={imgUrlRecog} />
         </div>
       )}
     </div>
   );
-  };
-  
-  export default App;
-  
+};
+
+export default App;
