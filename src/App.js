@@ -1,4 +1,4 @@
-import React, { useCallback, useState , useEffect } from "react";
+import React, { useCallback, useState  } from "react";
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 import Navigation from "./components/Navigation/Navigation";
@@ -16,6 +16,25 @@ const App = () => {
   const [route ,setRoute]=useState("signin")
   const [isSignedIn,setisSignedIn]=useState(false)
   const [particles, setParticles] = React.useState(0);
+  const [user,setUser]=useState({
+    id:"",
+    name:"",
+    email:"",
+    entries:0,
+    joined:""
+  });
+
+
+
+  const loadUser = (user)=>{
+    setUser({
+      id:user.id,
+      name:user.name,
+      email:user.email,
+      entries:user.entries,
+      joined:user.joined
+    })
+  }
 
 
 /*   useEffect(() => {
@@ -224,12 +243,12 @@ const calcBoxFace = (data) => {
       />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       {route === "signin" ? (
-        <SignIn onRouteChange={onRouteChange}  />
+        <SignIn loadUser={loadUser} onRouteChange={onRouteChange}  />
       ) : route === "register" ? (
-        <Register onRouteChange={onRouteChange}  />
+        <Register loadUser={loadUser} onRouteChange={onRouteChange}  />
       ) : (
         <div>
-          <Rank />
+          <Rank userEntires={user.entries} userName={user.name}/>
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
