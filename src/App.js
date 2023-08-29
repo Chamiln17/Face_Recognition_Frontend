@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState , useEffect } from "react";
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 import Navigation from "./components/Navigation/Navigation";
@@ -16,6 +16,13 @@ const App = () => {
   const [route ,setRoute]=useState("signin")
   const [isSignedIn,setisSignedIn]=useState(false)
   const [particles, setParticles] = React.useState(0);
+
+
+/*   useEffect(() => {
+    fetch("http://localhost:5000/")
+      .then((response) => response.json())
+      .then(console.log);
+  }, []);  */ // TESTING THE WATERS XD
 
 
   const MAX_PARTICLES = 100;
