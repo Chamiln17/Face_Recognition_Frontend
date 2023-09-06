@@ -48,6 +48,7 @@ const App = () => {
     }
     setParticles((prev) => prev + PUSH_NUMBER);
   };
+  
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
