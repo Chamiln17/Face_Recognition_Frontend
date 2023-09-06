@@ -211,7 +211,7 @@ const App = () => {
       .then((response) => response.json())
       .then((result) => {
         if(result){
-          setUser(Object.assign(user , {entries:user.entries +1}))
+          setUser(Object.assign(user , {entries:Number(user.entries)+1}))
           fetch("http://localhost:5000/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
