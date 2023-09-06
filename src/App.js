@@ -15,7 +15,6 @@ const App = () => {
   const [box, setBox] = useState({});
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setisSignedIn] = useState(false);
-  const [particles, setParticles] = React.useState(0);
   const [user, setUser] = useState({
     id: "",
     name: "",
@@ -23,6 +22,23 @@ const App = () => {
     entries: 0,
     joined: "",
   });
+  const [particles, setParticles] = React.useState(0);
+
+
+const initialState = ()=>{
+    setInput("");
+    setImgUrlRecog("");
+    setBox({});
+    setRoute("signin");
+    setisSignedIn(false);
+    setUser({
+      id: "",
+      name: "",
+      email: "",
+      entries: 0,
+      joined: "",
+    });
+}
 
   const loadUser = (user) => {
     setUser({
@@ -48,7 +64,7 @@ const App = () => {
     }
     setParticles((prev) => prev + PUSH_NUMBER);
   };
-  
+
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
@@ -222,6 +238,7 @@ const App = () => {
           })
           .then(response => response.json())
           .then(count =>{console.log(user.entries)})
+          .catch(console.log);
         }
         displayFaceBox(
           calcBoxFace(
@@ -236,7 +253,7 @@ const App = () => {
     if (route === "home") {
       setisSignedIn(true);
     } else {
-      setisSignedIn(false);
+      initialState();
     }
     setRoute(route);
   };
