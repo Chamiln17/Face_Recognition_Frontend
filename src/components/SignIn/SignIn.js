@@ -21,7 +21,8 @@ const SignIn = ({ onRouteChange , loadUser}) => {
     .then(user => {if(user.id){
       loadUser(user)
       onRouteChange("home");
-    }});    
+    }})
+    .catch(console.log)    
   };
 
   return (

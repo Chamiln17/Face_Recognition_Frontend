@@ -27,7 +27,8 @@ const Register = ({onRouteChange ,loadUser}) => {
     .then(user => {if(user){
       loadUser(user)
       onRouteChange("home");
-    }});    
+    }})
+    .catch(console.log)    
   };
 
     return (
