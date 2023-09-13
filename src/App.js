@@ -116,10 +116,10 @@ const initialState = ()=>{
         },
       }, */
       color: {
-        value: "#ffffff",
+        value: "#f9f9f9",
       },
       links: {
-        color: "#ffffff",
+        color: "#000",
         distance: 150,
         enable: true,
         opacity: 0.5,
@@ -182,7 +182,7 @@ const initialState = ()=>{
 
   const onPictureSubmit = () => {
     setImgUrlRecog(input);
-    fetch("http://localhost:5000/imageurl", {
+    fetch("https://face-recognition-backend-chamiln17.onrender.com/imageurl", {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -193,7 +193,7 @@ const initialState = ()=>{
       .then((result) => {
         if(result){
           setUser(Object.assign(user , {entries:Number(user.entries)+1}))
-          fetch("http://localhost:5000/image", {
+          fetch("https://face-recognition-backend-chamiln17.onrender.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

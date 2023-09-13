@@ -15,7 +15,7 @@ const Register = ({onRouteChange ,loadUser}) => {
     setRegisterPassword(event.target.value);
   };
   const onSubmitRegister = () => {
-    fetch("http://localhost:5000/register", {
+    fetch("https://face-recognition-backend-chamiln17.onrender.com/register", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -24,7 +24,7 @@ const Register = ({onRouteChange ,loadUser}) => {
         name: name
       })
     }).then(response => response.json())
-    .then(user => {if(user){
+    .then(user => {if(user.id){
       loadUser(user)
       onRouteChange("home");
     }})
