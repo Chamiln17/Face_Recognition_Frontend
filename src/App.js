@@ -189,7 +189,9 @@ const initialState = ()=>{
               input: input,
             })
       })
-      .then(response=> response.json())
+      .then(response=> {console.log(response.json());
+        return response.json();
+        })
       .then((result) => {
         if(result){
           setUser(Object.assign(user , {entries:Number(user.entries)+1}))
@@ -208,8 +210,7 @@ const initialState = ()=>{
             result.outputs[0].data.regions[0].region_info.bounding_box
           )
         );
-      })
-      .catch((error) => console.log("error", error));
+      }).catch((error) => console.log("error", error));
   };
 
   const onRouteChange = (route) => {

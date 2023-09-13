@@ -1,7 +1,7 @@
 import React from "react";
 import { Tilt } from "react-tilt";
 import "./Logo.css";
-import brain from "./brain.png";
+import face from "./face.png";
 
 const defaultOptions = {
   reverse: false, // reverse the tilt direction
@@ -24,7 +24,7 @@ const Logo = () => {
         style={{ height: 100, width: 100 }}
       >
         <div className="pa3">
-          <img src={brain} alt="Logo" />
+          <img src={face} alt="Logo" />
         </div>
       </Tilt>
     </div>
