@@ -56,8 +56,8 @@ const initialState = ()=>{
       .then(console.log);
   }, []);  */ // TESTING THE WATERS XD
 
-  const MAX_PARTICLES = 100;
-  const PUSH_NUMBER = 2;
+  const MAX_PARTICLES = 80;
+  const PUSH_NUMBER = 1;
   const handleParticlesPush = (mode) => {
     if (mode === "push" && particles >= MAX_PARTICLES) {
       return;
@@ -84,20 +84,20 @@ const initialState = ()=>{
       events: {
         onClick: {
           enable: true,
-          mode: "push",
+          mode: "",
         },
         onHover: {
           enable: true,
-          mode: "",
+          mode: "bubble",
         },
         resize: true,
       },
       modes: {
         bubble: {
-          distance: 400,
+          distance: 200,
           duration: 2,
           opacity: 0.8,
-          size: 40,
+          size: 10,
         },
         push: {
           quantity: PUSH_NUMBER,
@@ -116,10 +116,10 @@ const initialState = ()=>{
         },
       }, */
       color: {
-        value: "#f9f9f9",
+        value: "#253942",
       },
       links: {
-        color: "#000",
+        color: "#253942",
         distance: 150,
         enable: true,
         opacity: 0.5,
